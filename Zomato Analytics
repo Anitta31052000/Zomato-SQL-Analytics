@@ -1,1 +1,58 @@
-Zomato ER diagram 
+Provided with Zomato database that contains multiple tables storing details related to users, restaurants, orders, payments, delivery partners and coupons. 
+1)Task is to retrieve the list of tables in the zomato database.
+
+SELECT table_name AS Tables_in_zomato
+FROM information_schema.tables
+WHERE table_schema = 'zomato'
+ORDER BY table_name;
+
+2) SQL query to get the details of all the columns present in the table "Restaurants".
+
+Show columns from Restaurants;
+
+3)Write a SQL query to retrieve the top 5 most recent highest-rated reviews. The query should fetch the user's name, comment, and rating for each review.
+
+SELECT 
+    u.name,
+    r.comment,
+    r.rating
+FROM Users u
+JOIN Reviews r 
+    ON u.user_id = r.user_id
+ORDER BY 
+    r.review_date DESC,
+    r.rating DESC
+LIMIT 5;
+
+4)Write a SQL query to fetch the name of the user, rating, and comment for the first 10 reviews in the Reviews table
+SELECT 
+    u.name,
+    r.rating,
+    r.comment
+FROM Reviews r
+JOIN Users u
+    ON r.user_id = u.user_id
+
+LIMIT 10;
+5)Write a SQL query to fetch the name of the user, rating, and comment for the first 10 users, even if they don't have reviews.
+
+select u.name,r.rating,r.comment
+from Users u left outer join Reviews r 
+on u.user_id=r.user_id
+limit 10;
+
+6)Write a SQL query to retrieve the coupon code, discount percentage, active status, and order ID for all coupons, including unused ones (not linked to any orders).
+
+select c.code,c.discount_percentage,c.is_active,oc.order_id 
+from Coupons c left outer join Order_Coupons oc
+on c.coupon_id=oc.coupon_id
+order by  code DESC;
+
+7)Write a SQL query to fetch the restaurant name and dish name for each restaurant and its associated dishes. You should ensure that each restaurant is listed along with the dishes it offers.
+
+select r.name as restaurant_name, d.name as dish_name 
+from Restaurants r join Dishes d
+on r.restaurant_id=d.restaurant_id;
+
+8)Write a SQL query to fetch the name and type of all active delivery partners and restaurants that are currently delivering. The result should include two columns: one for the entity name and another for the entity type (i.e., whether it's a delivery partner or a restaurant)
+
